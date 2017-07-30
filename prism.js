@@ -467,17 +467,17 @@ if (!_self.document) {
 		return _self.Prism;
 	}
  	// In worker
-	_self.addEventListener('message', function(evt) {
-		var message = JSON.parse(evt.data),
-		    lang = message.language,
-		    code = message.code,
-		    immediateClose = message.immediateClose;
+	// _self.addEventListener('message', function(evt) {
+	// 	var message = JSON.parse(evt.data),
+	// 	    lang = message.language,
+	// 	    code = message.code,
+	// 	    immediateClose = message.immediateClose;
 
-		_self.postMessage(_.highlight(code, _.languages[lang], lang));
-		if (immediateClose) {
-			_self.close();
-		}
-	}, false);
+	// 	_self.postMessage(_.highlight(code, _.languages[lang], lang));
+	// 	if (immediateClose) {
+	// 		_self.close();
+	// 	}
+	// }, false);
 
 	return _self.Prism;
 }
@@ -562,11 +562,35 @@ Prism.hooks.add('wrap', function(env) {
 	}
 });
 
-Prism.languages.xml = Prism.languages.markup;
-Prism.languages.html = Prism.languages.markup;
-Prism.languages.mathml = Prism.languages.markup;
-Prism.languages.svg = Prism.languages.markup;
+// Prism.languages.xml = Prism.languages.markup;
+// Prism.languages.html = Prism.languages.markup;
+// Prism.languages.mathml = Prism.languages.markup;
+// Prism.languages.svg = Prism.languages.markup;
 
+Prism.languages.graphql = {
+	'comment': /#.*/,
+	'string': {
+		pattern: /"(?:\\.|[^\\"])*"/,
+		greedy: true
+	},
+	'number': /(?:\B-|\b)\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b/,
+	'boolean': /\b(?:true|false)\b/,
+	'variable': /\$[a-z_]\w*/i,
+	'directive': {
+		pattern: /@[a-z_]\w*/i,
+		alias: 'function'
+	},
+	'attr-name': /[a-z_]\w*(?=\s*:)/i,
+	'keyword': [
+		{
+			pattern: /(fragment\s+(?!on)[a-z_]\w*\s+|\.\.\.\s*)on\b/,
+			lookbehind: true
+		},
+		/\b(?:query|fragment|mutation)\b/
+	],
+	'operator': /!|=|\.{3}/,
+	'punctuation': /[!(){}\[\]:=,]/
+};
 
 /* **********************************************
      Begin prism-css.js
